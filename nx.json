@@ -29,6 +29,9 @@
   "projects": {
     "svc1": {
       "tags": []
+    },
+    "svc2": {
+      "tags": []
     }
   }
 }
