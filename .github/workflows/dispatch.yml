@@ -16,6 +16,7 @@ jobs:
         run: |
           echo $(nx print-affected)
           echo '::set-output name=affected::$(nx print-affected | jq -c ".projects")'
+
     outputs:
       affected: ${{ steps.get-affected.outputs.affected }}
 
