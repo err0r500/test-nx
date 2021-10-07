@@ -15,7 +15,10 @@ jobs:
         run: npm install
       - name: get affected projects
         id: get-affected-projects
-        run: echo ::set-output name=affected::$(nx print-affected | jq -rc ".projects")
+        run: |
+          affected=$(nx print-affected | jq -rc '.projects')
+          echo $affected
+          echo '::set-output name=affected::$affected'
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
