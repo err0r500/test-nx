@@ -27,13 +27,13 @@ jobs:
     needs: get-affected
     strategy:
       matrix:
-        projects: ${{ fromJson(needs.get-affected.outputs.affected) }}
+        project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
-      - run: echo ${{ matrix.projects }}
+      - run: echo ${{ matrix.project }}
       - name: dispatch to ci
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
           event-type: affected
-          client-payload: '{"ref": "${{ github.ref }}", project": "${{ matrix.projects }}"}'
+          client-payload: '{"ref": "${{ github.ref }}", "project": "${{ matrix.project }}"}'
 
