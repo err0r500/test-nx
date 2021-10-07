@@ -20,6 +20,7 @@ jobs:
         run: |
           AFFECTED=$(nx print-affected --base HEAD^1 | jq -c '.projects | @csv')
           echo '::set-output name=affected::[$AFFECTED]'
+
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
