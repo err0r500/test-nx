@@ -18,15 +18,15 @@ jobs:
       - name: get affected projects
         id: get-affected-projects
         run: |
-          AFFECTED=$(nx print-affected --base HEAD^1 | jq -c '.projects')
-          echo '::set-output name=affected::$AFFECTED'
+          AFFECTED=$(nx print-affected --base HEAD^1 | jq -c '.projects | @csv')
+          echo '::set-output name=affected::[$AFFECTED]'
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
   dispatch:
     runs-on: ubuntu-latest
     needs: get-affected
-    if: fromJson(needs.get-affected.outputs.affected)[0] != null
+    if: fromJson(needs.get-affected.outputs.affected)[0] != ""
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
