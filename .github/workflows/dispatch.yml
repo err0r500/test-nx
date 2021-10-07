@@ -14,13 +14,13 @@ jobs:
       - name: install
         run: npm install
       - name: get affected
-        id: get-affected
+        id: get-affected-projects
         run: |
-          echo $(nx print-affected)
-          echo '::set-output name=affected::$(nx print-affected | jq -c ".projects")'
-
+          affected=$(nx print-affected | jq -c '.projects')
+          echo $affected
+          echo '::set-output name=affected::$affected'
     outputs:
-      affected: ${{ steps.get-affected.outputs.affected }}
+      affected: ${{ steps.get-affected-projects.outputs.affected }}
 
   dispatch:
     runs-on: ubuntu-latest
@@ -35,5 +35,5 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: affected
-          client-payload: '{"ref": "${{ github.ref }}", project": "${{ matrix.affected }}"}'
+          client-payload: '{"ref": "${{ github.ref }}", project": "${{ matrix.projects }}"}'
 
