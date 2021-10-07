@@ -16,7 +16,7 @@ jobs:
       - name: get affected projects
         id: get-affected-projects
         run: |
-          affected=$(nx print-affected | jq -rc '.projects')
+          affected=$(nx print-affected --base=HEAD^1 | jq -rc '.projects')
           echo $affected
           echo '::set-output name=affected::$affected'
     outputs:
