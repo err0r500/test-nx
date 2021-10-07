@@ -1,7 +1,7 @@
 name: dispatch
 on: push
 jobs:
-  setup:
+  get-affected:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -11,18 +11,12 @@ jobs:
           node-version: '14'
       - name: Install nx
         run: npm install -g nx
-  # maybe install jq
-
-  get-affected:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: get affected
         id: get-affected
         run: |
           affected=$(nx print-affected | jq -c '.projects')
-          echo '::set-output name=dispatch_to::$affected'
           ::debug::$affected
+          echo '::set-output name=affected::$affected'
     outputs:
       affected: ${{ steps.get-affected.outputs.affected }}
 
