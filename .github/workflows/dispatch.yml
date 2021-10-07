@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -16,7 +18,7 @@ jobs:
       - name: get affected projects
         id: get-affected-projects
         run: |
-          affected=$(nx print-affected --base=HEAD^1 | jq -rc '.projects')
+          affected=$(nx print-affected --base HEAD^1 | jq -rc '.projects')
           echo $affected
           echo '::set-output name=affected::$affected'
     outputs:
