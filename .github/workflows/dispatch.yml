@@ -11,6 +11,8 @@ jobs:
           node-version: '14'
       - name: Install nx
         run: npm install -g nx
+      - name: install
+        run: npm install
       - name: get affected
         id: get-affected
         run: |
