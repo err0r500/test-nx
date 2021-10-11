@@ -1,0 +1,43 @@
+name: dispatch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  get-affected:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install nx
+        run: npm install -g nx
+      - name: install
+        run: npm install
+      - name: get affected projects
+        id: get-affected-projects
+        run: |
+          echo "::set-output name=affected::$(nx print-affected --base HEAD^1 | jq -c '.projects')"
+    outputs:
+      affected: ${{ steps.get-affected-projects.outputs.affected }}
+
+  dispatch:
+    runs-on: ubuntu-latest
+    needs: get-affected
+    if: fromJson(needs.get-affected.outputs.affected)[0] != null
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+    steps:
+      - name: dispatch to ci
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: ${{ matrix.project }}
+          client-payload: '{"ref": "${{ github.ref }}", "project": "${{ matrix.project }}"}'

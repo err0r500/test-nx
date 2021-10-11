@@ -1,0 +1,111 @@
+{
+  "version": 2,
+  "projects": {
+    "svc1": {
+      "root": "apps/svc1",
+      "sourceRoot": "apps/svc1/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/svc1",
+            "main": "apps/svc1/src/main.ts",
+            "tsConfig": "apps/svc1/tsconfig.app.json",
+            "assets": ["apps/svc1/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/svc1/src/environments/environment.ts",
+                  "with": "apps/svc1/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "svc1:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/svc1/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/svc1"],
+          "options": {
+            "jestConfig": "apps/svc1/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "svc2": {
+      "root": "apps/svc2",
+      "sourceRoot": "apps/svc2/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/svc2",
+            "main": "apps/svc2/src/main.ts",
+            "tsConfig": "apps/svc2/tsconfig.app.json",
+            "assets": ["apps/svc2/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/svc2/src/environments/environment.ts",
+                  "with": "apps/svc2/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "svc2:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/svc2/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/svc2"],
+          "options": {
+            "jestConfig": "apps/svc2/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "svc1"
+}
