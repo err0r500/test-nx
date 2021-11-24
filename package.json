@@ -14,7 +14,6 @@
     "@nestjs/platform-express": "^7.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.3",
-    "svc3": "file:apps/svc3",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

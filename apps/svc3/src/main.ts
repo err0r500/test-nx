@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
-import twas from 'twas';
+import * as r from 'rtrim';
 
 // we can use app specific dependencies
-console.log(twas(Date.now() - (5 * 1000)));
+console.log(r('I print without exclamation mark !!!!!!', '!'));
 
 // we can also use project-wide dependencies
 class Other {}

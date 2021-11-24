@@ -1,6 +1,6 @@
 {
   "name": "svc3",
   "dependencies": {
-    "twas": "^2.1.2"
+    "rtrim": "^1.0.1"
   }
 }
