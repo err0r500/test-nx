@@ -15,29 +15,21 @@ They perform the actual CI for their service.
 
 
 ## Dependency management
+
+### Goal
+- keep all shared deps in `<root>/node_modules` and have svc3 specific deps in `./apps/svc3/node_modules`
+- be able to use shared deps from svc3
+
+### package.json organization
 the [root package.json](./package.json) contains project wide dependencies
 
 the [app specific package.json](./apps/svc3/package.json) contains app specific dependencies
 
-### local dev
-
-Goal :
-- keep all shared deps in `<root>/node_modules` and have svc3 specific deps in `./apps/svc3/node_modules`
-- be able to use shared deps from svc3
-
+### run an app (svc3) with specific deps
 ```
 npm i
 cd ./apps/svc3
 npm i
-nx serve svc3
 ```
 
-### deployment
-
-Goal : have shared + svc3 specific dependencies all together in `<root>/node_modules`
-
-```
-npm i
-npm i ./apps/svc3
-nx serve svc3
-```
+then `nx serve svc3` from anywhere in the project should work
