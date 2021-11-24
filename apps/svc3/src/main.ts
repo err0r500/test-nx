@@ -1,8 +1,11 @@
 import { Inject } from '@nestjs/common';
-import * as r from 'rtrim';
 
-// we can use app specific dependencies
-console.log(r('I print without exclamation mark !!!!!!', '!'));
+// we can use app use specific dependencies (even dynamically)
+async function sayBla(){
+  const r = await import('rtrim');
+  console.log(r('I print without exclamation mark !!!!!!', '!'));
+}
+sayBla()
 
 // we can also use project-wide dependencies
 class Other {}
