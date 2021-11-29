@@ -13,7 +13,7 @@ runs:
       with:
         ref: ${{ inputs.gitRef }}
 
-k   - name: Setup Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
