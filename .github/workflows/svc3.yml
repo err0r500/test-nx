@@ -1,0 +1,15 @@
+name: svc3
+
+on:
+  repository_dispatch:
+    types:
+      - 'svc3'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: err0r500/test-nx/.github/actions/nx@feat/composite-actions
+        with:
+          gitRef: ${{ github.event.client_payload.ref }}
+          app: ${{ github.event.client_payload.project }}
