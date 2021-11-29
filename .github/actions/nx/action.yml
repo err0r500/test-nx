@@ -19,8 +19,11 @@ runs:
         node-version: '14'
     - name: Install nx
       run: npm install -g nx
+      shell: bash
     - name: install app deps
       run: cd ./apps/${{ inputs.app }}&& npm install
+      shell: bash
     - name: test !
       run: nx test ${{ inputs.app }}
+      shell: bash
 
