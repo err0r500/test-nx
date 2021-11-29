@@ -1,5 +1,5 @@
 name: nx
-description: 'this action install nx & and shared js dependencies'
+description: 'this action installs nx & and shared js dependencies'
 
 inputs:
   gitRef:
