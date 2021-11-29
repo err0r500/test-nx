@@ -23,9 +23,13 @@ runs:
       shell: bash
       run: npm install -g nx
 
-    - name: install app deps
+    - name: install nx & shared deps
       shell: bash
-      run: cd ./apps/${{ inputs.app }}&& npm install
+      run: npm install
+
+    - name: install app-specific deps
+      shell: bash
+      run: cd ./apps/${{ inputs.app }} && npm install
 
     - name: test !
       shell: bash
