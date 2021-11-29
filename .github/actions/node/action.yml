@@ -1,0 +1,19 @@
+name: node
+description: 'this action install node app specific packages & run tests'
+
+inputs:
+  app:
+    required: true
+    description: 'the nx (js) app to test'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: install app-specific deps
+      shell: bash
+      run: cd ./apps/${{ inputs.app }} && npm install
+
+    - name: test !
+      shell: bash
+      run: nx test ${{ inputs.app }}
+

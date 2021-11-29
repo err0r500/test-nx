@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import * as r from 'rtrim';
 import {exclamationMark} from './dynamic';
 
+
 // we can use app use specific dependencies
 console.log(r('I print without question mark ?????', '?'));
 

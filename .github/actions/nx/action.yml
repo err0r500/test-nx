@@ -1,12 +1,11 @@
 name: nx
 description: 'this action install nx & runs tests'
+
 inputs:
   gitRef:
     required: true
     description: 'the git ref to checkout'
-  app:
-    required: true
-    description: 'the nx (js) app to test'
+
 runs:
   using: 'composite'
   steps:
@@ -14,7 +13,7 @@ runs:
       with:
         ref: ${{ inputs.gitRef }}
 
-    - name: Setup Node.js
+k   - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
@@ -26,12 +25,3 @@ runs:
     - name: install nx & shared deps
       shell: bash
       run: npm install
-
-    - name: install app-specific deps
-      shell: bash
-      run: cd ./apps/${{ inputs.app }} && npm install
-
-    - name: test !
-      shell: bash
-      run: nx test ${{ inputs.app }}
-

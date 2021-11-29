@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/composite-actions
 
 jobs:
   get-affected:

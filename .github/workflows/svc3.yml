@@ -12,4 +12,7 @@ jobs:
       - uses: err0r500/test-nx/.github/actions/nx@main
         with:
           gitRef: ${{ github.event.client_payload.ref }}
+
+      - uses: err0r500/test-nx/.github/actions/node@main
+        with:
           app: ${{ github.event.client_payload.project }}
