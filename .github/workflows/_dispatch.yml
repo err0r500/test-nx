@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feat/nx-actions
+      - feat/composite-actions
 
 jobs:
   get-affected:
