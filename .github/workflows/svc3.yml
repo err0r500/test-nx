@@ -13,3 +13,4 @@ jobs:
         with:
           gitRef: ${{ github.event.client_payload.ref }}
           app: ${{ github.event.client_payload.project }}
+        shell: bash

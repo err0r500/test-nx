@@ -13,16 +13,20 @@ runs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ inputs.gitRef }}
+
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
+
     - name: Install nx
       run: npm install -g nx
       shell: bash
+
     - name: install app deps
       run: cd ./apps/${{ inputs.app }}&& npm install
       shell: bash
+
     - name: test !
       run: nx test ${{ inputs.app }}
       shell: bash
