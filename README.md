@@ -1,5 +1,6 @@
 [![svc1](https://github.com/err0r500/test-nx/actions/workflows/svc1.yml/badge.svg)](https://github.com/err0r500/test-nx/actions/workflows/svc1.yml)
 [![svc2](https://github.com/err0r500/test-nx/actions/workflows/svc2.yml/badge.svg)](https://github.com/err0r500/test-nx/actions/workflows/svc2.yml)
+[![svc3](https://github.com/err0r500/test-nx/actions/workflows/svc3.yml/badge.svg?branch=main&event=repository_dispatch)](https://github.com/err0r500/test-nx/actions/workflows/svc3.yml)
 
 ## workflows
 
