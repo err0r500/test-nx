@@ -40,7 +40,7 @@ jobs:
         with:
           workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          inputs: '{"ref": "${{ github.sha }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
+          inputs: '{"ref": "${{ github.sha }}", "trunk-flow": "${{ steps.trunk-flow.outputs.is-trunk }}"}'
             #- name: dispatch to ci
             #  uses: peter-evans/repository-dispatch@v1
             #  with:
