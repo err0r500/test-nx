@@ -3,42 +3,15 @@ name: svc2
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: 'the git ref to checkout'
-        required: true
-      trunk-flow:
+      success:
         description: 'is it a trunk or PR flow?'
         required: true
 
 jobs:
-  ci:
+  report-status:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.ref }}
-      - uses: err0r500/test-nx/.github/actions/nx@main
-      - uses: err0r500/test-nx/.github/actions/node@main
-        with:
-          app: ${{ github.workflow }}
-
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.ref }}
-      - uses: err0r500/test-nx/.github/actions/docker@main
-        with:
-          app: ${{ github.workflow }}
-          gitRef: ${{ github.event.inputs.ref }}
-          dockerfile: ./dockerfiles/Dockerfile.node
-
-  deploy:
-    if: ${{ github.event.inputs.trunk-flow }}
-    needs:
-      - ci
-      - docker
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "deploy !"
+      - run: exit 0
+        if: ${{ github.event.inputs.success }}
+      - run: exit 1
+        if: ${{ ! github.event.inputs.success }}

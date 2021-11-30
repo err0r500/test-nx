@@ -63,3 +63,25 @@ jobs:
         with:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
+
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: fromJson(needs.get-affected.outputs.affected)[0] != null
+      # && ${{ github.event.inputs.trunk-flow }}
+    needs:
+      - get-affected
+      - docker-build
+      - test
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+    steps:
+      - run: echo "deploy !"
+      - if: always()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: ${{ matrix.project }}
+          client-payload: '{"project": "${{ matrix.project }}", "sucess": ${{ job.status == "success" }'
