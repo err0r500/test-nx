@@ -45,12 +45,11 @@ jobs:
         with:
           app: ${{ matrix.project }}
       - if: ${{ failure() }}
-        uses: peter-evans/repository-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1
         with:
+          workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
-
+          inputs: '{"success": false }'
 
 
 
@@ -70,12 +69,11 @@ jobs:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
       - if: ${{ failure() }} && github.ref == 'refs/head/main'
-        uses: peter-evans/repository-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1
         with:
+          workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
-
+          inputs: '{"success": false }'
 
 
 
@@ -93,14 +91,14 @@ jobs:
     steps:
       - run: echo "deploy !"
       - if: ${{ failure() }}
-        uses: peter-evans/repository-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1
         with:
+          workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
+          inputs: '{"success": false }'
       - if: github.ref == 'refs/head/main'
-        uses: peter-evans/repository-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1
         with:
+          workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": true }'
+          inputs: '{"success": true }'

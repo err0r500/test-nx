@@ -20,7 +20,7 @@ runs:
     - name: use node default docker image
       if: contains(fromJson('["svc1", "svc2", "svc3"]'), inputs.app)
       shell: bash
-      run: echo "dockerfile=./dockerfiles/Dockerfile.node" >> $GITHUB_ENV"
+      run: echo "dockerfile=./dockerfiles/Dockerfile.node" >> $GITHUB_ENV
 
     - name: Build and push
       uses: docker/build-push-action@v2
