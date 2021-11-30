@@ -33,9 +33,13 @@ jobs:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
+      - run: echo ${{ matrix.project }}
       - id: trunk-flow
         run: |
           echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
       - uses: err0r500/test-nx/.github/actions/nx@main
       - uses: err0r500/test-nx/.github/actions/install-deps@feat/pr-flow
         with:
