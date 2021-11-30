@@ -9,17 +9,31 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: err0r500/test-nx/.github/actions/nx@main
+      - uses: actions/checkout@v2
         with:
-          gitRef: ${{ github.event.client_payload.ref }}
-
+          ref: ${{ inputs.gitRef }}
+      - uses: err0r500/test-nx/.github/actions/nx@main
       - uses: err0r500/test-nx/.github/actions/node@main
         with:
           app: ${{ github.event.client_payload.project }}
 
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.gitRef }}
       - uses: err0r500/test-nx/.github/actions/docker@main
         with:
           app: ${{ github.event.client_payload.project }}
           gitRef: ${{ github.event.client_payload.ref }}
           dockerfile: ./dockerfiles/Dockerfile.node
+
+  deploy:
+    needs:
+      - ci
+      - docker
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "deploy ${{ github.event.client_payload.project }}"
 
