@@ -4,10 +4,6 @@ description: 'build the docker image'
 inputs:
   app:
     required: true
-    description: 'the nx (js) app to test'
-  dockerfile:
-    required: false
-    description: 'the Dockerfile to be used'
   gitRef:
     required: true
     description: 'the git ref to be used as tag'
@@ -19,12 +15,22 @@ runs:
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+    - name: app docker file
+      id: app-dockerfile
+      shell: bash
+      run: |
+        defaultNodeApps=("svc1" "svc2" "svc3")
+        if [[ " ${defaultNodeApps[@]} " =~ " ${{ inputs.app }} " ]]; then
+          echo "::set-output name=dockerfile::./dockerfiles/Dockerfile.node"
+        else
+          echo "no docker image for app ${{ inputs.app }}"
+        fi
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
         context: .
         push: false
         tags: test-nx/${{ inputs.app }}:${{ inputs.gitRef }}
-        file: ${{ inputs.dockerfile }}
+        file: ${{ steps.app-dockerfile.outputs.dockerfile }}
         build-args: |
           app=${{ inputs.app }}

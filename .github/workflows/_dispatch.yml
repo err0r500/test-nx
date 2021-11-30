@@ -24,7 +24,7 @@ jobs:
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
-  dispatch:
+  test:
     runs-on: ubuntu-latest
     needs:
       - get-affected
@@ -33,27 +33,26 @@ jobs:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
-      - run: echo ${{ matrix.project }}
       - id: trunk-flow
         run: |
           echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
       - uses: err0r500/test-nx/.github/actions/nx@main
       - uses: err0r500/test-nx/.github/actions/install-deps@feat/pr-flow
         with:
           app: ${{ matrix.project }}
-            #trunk-flow: ${{ steps.trunk-flow.outputs.is-trunk }}
 
-          #  - uses: benc-uk/workflow-dispatch@v1
-          #    with:
-          #      workflow: ${{ matrix.project }}
-          #      token: ${{ secrets.PAT }}
-          #      inputs: '{"ref": "${{ github.sha }}", "trunk-flow": "${{ steps.trunk-flow.outputs.is-trunk }}"}'
-            #- name: dispatch to ci
-            #  uses: peter-evans/repository-dispatch@v1
-            #  with:
-            #    token: ${{ secrets.PAT }}
-            #    event-type: ${{ matrix.project }}
-            #    client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
+  docker-build:
+    runs-on: ubuntu-latest
+    needs:
+      - get-affected
+    if: fromJson(needs.get-affected.outputs.affected)[0] != null && github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: err0r500/test-nx/.github/actions/docker@main
+        with:
+          app: ${{ matrix.project }}
+          gitRef: ${{ github.sha }}
