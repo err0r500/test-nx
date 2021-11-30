@@ -1,10 +1,6 @@
 name: svc2
 
-on:
-  repository_dispatch:
-    types:
-      - 'svc2'
-
+on: workflow_dispatch
 
 jobs:
   ci:
