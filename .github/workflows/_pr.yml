@@ -1,6 +1,9 @@
-name: dispatch
+name: pr
 
-on: push
+on:
+  push:
+    branch:
+      - '!main'
 
 jobs:
   get-affected:
@@ -45,8 +48,6 @@ jobs:
       - uses: err0r500/test-nx/.github/actions/install-deps@main
         with:
           app: ${{ matrix.project }}
-      - if: ${{ failure() }}
-        run: echo "I run when a preceeding step has failed"
       - if: ${{ failure() }}
         uses: peter-evans/repository-dispatch@v1
         with:
