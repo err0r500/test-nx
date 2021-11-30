@@ -45,6 +45,8 @@ jobs:
         with:
           app: ${{ matrix.project }}
       - if: ${{ failure() }}
+        run: echo "I run when a preceeding step has failed"
+      - if: ${{ failure() }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
