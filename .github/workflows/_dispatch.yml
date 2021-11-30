@@ -44,6 +44,12 @@ jobs:
       - uses: err0r500/test-nx/.github/actions/install-deps@feat/pr-flow
         with:
           app: ${{ matrix.project }}
+      - if: ${{ failure() }}
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: ${{ matrix.project }}
+          client-payload: '{"sucess": false }'
 
 
 
@@ -63,12 +69,19 @@ jobs:
         with:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
+      - if: ${{ failure() }} && github.ref == 'refs/head/main'
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: ${{ matrix.project }}
+          client-payload: '{"sucess": false }'
+
 
 
 
   deploy:
     runs-on: ubuntu-latest
-    if: fromJson(needs.get-affected.outputs.affected)[0] != null
+    if: sucess() && fromJson(needs.get-affected.outputs.affected)[0] != null
       # && ${{ github.event.inputs.trunk-flow }}
     needs:
       - get-affected
@@ -79,15 +92,15 @@ jobs:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
       - run: echo "deploy !"
-      - if: job.status == 'sucess'
+      - if: ${{ failure() }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"project": "${{ matrix.project }}", "sucess": true }'
-      - if: job.status != 'sucess'
+          client-payload: '{"sucess": false }'
+      - if: github.ref == 'refs/head/main'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"project": "${{ matrix.project }}", "sucess": false }'
+          client-payload: '{"sucess": true }'
