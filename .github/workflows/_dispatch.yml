@@ -35,6 +35,7 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+      fail-fast: false
     steps:
       - id: trunk-flow
         run: |
@@ -64,6 +65,7 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - uses: err0r500/test-nx/.github/actions/docker@main
@@ -90,6 +92,7 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
+      fail-fast: false
     steps:
       - run: echo "deploy !"
       - uses: peter-evans/repository-dispatch@v1
