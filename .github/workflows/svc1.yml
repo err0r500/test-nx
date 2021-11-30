@@ -30,9 +30,11 @@ jobs:
           dockerfile: ./dockerfiles/Dockerfile.node
 
   deploy:
+    if: ${{inputs.trunk-flow}}
     needs:
       - ci
       - docker
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{inputs}}
       - run: echo "deploy ${{ github.event.client_payload.project }}"
