@@ -10,6 +10,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     outputs:
       value: true
+    steps:
+      - run: echo "trigger trunk flow"
 
   get-affected:
     runs-on: ubuntu-latest
