@@ -2,7 +2,7 @@ name: trunk
 
 on:
   push:
-    branch:
+    branches:
       - 'main'
 
 jobs:
