@@ -10,14 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: err0r500/test-nx/.github/actions/nx@main
         with:
           gitRef: ${{ github.event.client_payload.ref }}
+
       - uses: err0r500/test-nx/.github/actions/install-deps@main
         with:
           app: ${{ github.event.client_payload.project }}
+
       - uses: err0r500/test-nx/.github/actions/docker@main
         with:
           app: ${{ github.event.client_payload.project }}
           gitRef: ${{ github.event.client_payload.ref }}
+
       - run: echo "deploy !"

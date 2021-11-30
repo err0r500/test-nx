@@ -40,4 +40,4 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"ref": "${{ github.ref }}", "project": "${{ matrix.project }}"}'
+          client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}"}'
