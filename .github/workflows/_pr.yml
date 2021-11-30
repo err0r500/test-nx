@@ -14,8 +14,7 @@ jobs:
         with:
           ref: main
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
+      - run: git branch
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
