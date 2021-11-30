@@ -1,18 +1,16 @@
 name: svc1
 
 on:
-  workflow_dispatch:
-    inputs:
-      success:
-        description: 'is it a trunk or PR flow?'
-        required: true
+  repository_dispatch:
+    types:
+      - 'svc1'
 
 jobs:
   report-status:
     runs-on: ubuntu-latest
     steps:
       - run: exit 0
-        if: ${{ github.event.inputs.success }}
+        if: ${{ inputs.success }}
       - run: exit 1
-        if: ${{ ! github.event.inputs.success }}
+        if: ${{ ! inputs.success }}
 
