@@ -79,9 +79,15 @@ jobs:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
       - run: echo "deploy !"
-      - if: always()
+      - if: job.status == 'sucess'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"project": "${{ matrix.project }}", "sucess": ${{ job.status == \'success\' }} }'
+          client-payload: '{"project": "${{ matrix.project }}", "sucess": true }'
+      - if: job.status != 'sucess'
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: ${{ matrix.project }}
+          client-payload: '{"project": "${{ matrix.project }}", "sucess": false }'
