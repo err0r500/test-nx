@@ -8,7 +8,8 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: echo
+    - run: echo ${{ inputs }}
+      shell: bash
     - name: node application
       uses: err0r500/test-nx/.github/actions/node@main
       if: ${{ inputs.app }} == 'svc3'
