@@ -2,10 +2,11 @@ name: pr
 
 on:
   push:
-    branch:
-      - '!main'
+    branches-ignore:
+      - 'main'
 
 jobs:
+
   get-affected:
     runs-on: ubuntu-latest
     steps:
