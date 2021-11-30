@@ -36,9 +36,10 @@ jobs:
       - id: trunk-flow
         run: |
           echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
-      - uses: err0r500/test-nx/.github/actions/${{ matrix.project }}@feat/pr-flow
+      - uses: err0r500/test-nx/.github/actions/install-deps@feat/pr-flow
         with:
-          trunk-flow: ${{ steps.trunk-flow.outputs.is-trunk }}
+          app: ${{ matrix.project }}
+            #trunk-flow: ${{ steps.trunk-flow.outputs.is-trunk }}
 
           #  - uses: benc-uk/workflow-dispatch@v1
           #    with:

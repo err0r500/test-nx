@@ -1,9 +1,8 @@
-name: svc3
+name: install-deps
 description: 'todo'
 
 inputs:
-  trunk-flow:
-    description: 'is it a trunk or PR flow?'
+  app:
     required: true
 
 runs:
@@ -11,5 +10,6 @@ runs:
   steps:
     - uses: err0r500/test-nx/.github/actions/nx@main
     - uses: err0r500/test-nx/.github/actions/node@main
+      if: inputs.app == 'svc1' || inputs.app == 'svc2' || inputs.app == 'svc3'
       with:
-        app: svc3
+        app: inputs.app
