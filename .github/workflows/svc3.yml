@@ -30,6 +30,7 @@ jobs:
           dockerfile: ./dockerfiles/Dockerfile.node
 
   deploy:
+    if: ${{inputs.trunk-flow}}
     needs:
       - ci
       - docker
