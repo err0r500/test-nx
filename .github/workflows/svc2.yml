@@ -20,7 +20,7 @@ jobs:
       - uses: err0r500/test-nx/.github/actions/nx@main
       - uses: err0r500/test-nx/.github/actions/node@main
         with:
-          app: $GITHUB_WORKFLOW
+          app: ${{ github.workflow }}
 
   docker:
     runs-on: ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
       - uses: err0r500/test-nx/.github/actions/docker@main
         with:
-          app: $GITHUB_WORKFLOW
+          app: ${{ github.workflow }}
           gitRef: ${{ github.event.inputs.ref }}
           dockerfile: ./dockerfiles/Dockerfile.node
 
