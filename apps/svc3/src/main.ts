@@ -12,7 +12,6 @@ exclamationMark()
 class Other {}
 
 export class Bla{
-
  constructor(
     @Inject(Other) private readonly loanRepo: Other,
   ) {}
