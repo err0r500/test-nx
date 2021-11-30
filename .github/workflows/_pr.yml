@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -24,7 +24,7 @@ jobs:
       - name: get affected projects
         id: get-affected-projects
         run: |
-          echo "::set-output name=affected::$(nx print-affected --base HEAD^1 | jq -c '.projects')"
+          echo "::set-output name=affected::$(nx print-affected --base origin/main | jq -c '.projects')"
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
@@ -39,7 +39,6 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
-      fail-fast: false
     steps:
       - id: trunk-flow
         run: |
@@ -49,12 +48,6 @@ jobs:
       - uses: err0r500/test-nx/.github/actions/install-deps@main
         with:
           app: ${{ matrix.project }}
-      - if: ${{ failure() }}
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
 
 
 
@@ -63,11 +56,10 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - get-affected
-    if: fromJson(needs.get-affected.outputs.affected)[0] != null && github.ref == 'refs/heads/main'
+    if: fromJson(needs.get-affected.outputs.affected)[0] != null
     strategy:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
-      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - uses: err0r500/test-nx/.github/actions/docker@main
@@ -75,36 +67,3 @@ jobs:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
 
-      - if: ${{ failure() }} && github.ref == 'refs/head/main'
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
-
-
-
-
-  deploy:
-    runs-on: ubuntu-latest
-    if: fromJson(needs.get-affected.outputs.affected)[0] != null && github.ref == 'refs/heads/main'
-    needs:
-      - docker-build
-      - test
-    strategy:
-      matrix:
-        project: ${{ fromJson(needs.get-affected.outputs.affected) }}
-      fail-fast: false
-    steps:
-      - run: echo "deploy !"
-      - uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": true }'
-      - if: ${{ failure() }}
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: ${{ matrix.project }}
-          client-payload: '{"success": false }'
