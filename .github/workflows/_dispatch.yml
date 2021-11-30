@@ -44,4 +44,4 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }}'
+          client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
