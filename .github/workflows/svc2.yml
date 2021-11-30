@@ -9,9 +9,7 @@ jobs:
   report-status:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ inputs }}
       - run: exit 0
-        if: ${{ inputs.success }}
+        if: ${{ github.event.client_payload.success }}
       - run: exit 1
-        if: ${{ ! inputs.success }}
-
+        if: ${{ ! github.event.client_payload.success }}
