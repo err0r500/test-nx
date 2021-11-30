@@ -36,6 +36,7 @@ jobs:
       - id: trunk-flow
         run: |
           echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
+      - uses: err0r500/test-nx/.github/actions/nx@main
       - uses: err0r500/test-nx/.github/actions/install-deps@feat/pr-flow
         with:
           app: ${{ matrix.project }}

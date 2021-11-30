@@ -8,8 +8,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: err0r500/test-nx/.github/actions/nx@main
-    - uses: err0r500/test-nx/.github/actions/node@main
-      if: inputs.app == 'svc1' || inputs.app == 'svc2' || inputs.app == 'svc3'
+    - run: echo
+    - name: node application
+      uses: err0r500/test-nx/.github/actions/node@main
+      if: ${{ inputs.app }} == 'svc3'
       with:
-        app: inputs.app
+        app: ${{ inputs.app }}
