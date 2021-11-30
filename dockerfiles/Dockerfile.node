@@ -4,11 +4,12 @@
 FROM node:16 as builder
 ARG app
 RUN echo "building ${app}"
+
 WORKDIR /usr/src/app
 RUN npm i -g nx
 COPY . .
-RUN npm ci --ignore-scripts
-RUN cd ./apps/${app} && npm ci --only=production --ignore-scripts
+RUN npm ci
+RUN cd ./apps/${app} && npm ci
 RUN nx build ${app} --prod
 
 # we want to remove all nx specific dependencies
