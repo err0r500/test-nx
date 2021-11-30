@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"sucess": false }'
+          client-payload: '{"success": false }'
 
 
 
@@ -74,14 +74,14 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"sucess": false }'
+          client-payload: '{"success": false }'
 
 
 
 
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ success() }} && fromJson(needs.get-affected.outputs.affected)[0] != null
+    if: fromJson(needs.get-affected.outputs.affected)[0] != null
       # && ${{ github.event.inputs.trunk-flow }}
     needs:
       - get-affected
@@ -97,10 +97,10 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"sucess": false }'
+          client-payload: '{"success": false }'
       - if: github.ref == 'refs/head/main'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
           event-type: ${{ matrix.project }}
-          client-payload: '{"sucess": true }'
+          client-payload: '{"success": true }'
