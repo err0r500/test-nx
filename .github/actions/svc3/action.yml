@@ -1,0 +1,15 @@
+name: svc3
+description: 'todo'
+
+inputs:
+  trunk-flow:
+    description: 'is it a trunk or PR flow?'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: err0r500/test-nx/.github/actions/nx@main
+    - uses: err0r500/test-nx/.github/actions/node@main
+      with:
+        app: svc3
