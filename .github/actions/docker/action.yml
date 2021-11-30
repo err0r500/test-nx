@@ -4,10 +4,6 @@ description: 'build the docker image'
 inputs:
   app:
     required: true
-    description: 'the nx (js) app to test'
-  dockerfile:
-    required: false
-    description: 'the Dockerfile to be used'
   gitRef:
     required: true
     description: 'the git ref to be used as tag'
@@ -17,14 +13,21 @@ runs:
   steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+
+    - name: use node default docker image
+      if: contains(fromJson('["svc1", "svc2", "svc3"]'), inputs.app)
+      shell: bash
+      run: echo "dockerfile=./dockerfiles/Dockerfile.node" >> $GITHUB_ENV
+
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
         context: .
         push: false
         tags: test-nx/${{ inputs.app }}:${{ inputs.gitRef }}
-        file: ${{ inputs.dockerfile }}
+        file: ${{ env.dockerfile }}
         build-args: |
           app=${{ inputs.app }}

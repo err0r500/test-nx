@@ -5,36 +5,13 @@ on:
     types:
       - 'svc2'
 
-
 jobs:
-  ci:
+  report-status:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ inputs.gitRef }}
-      - uses: err0r500/test-nx/.github/actions/nx@main
-      - uses: err0r500/test-nx/.github/actions/node@main
-        with:
-          app: ${{ github.event.client_payload.project }}
+      - run: echo ${{ inputs }}
+      - run: exit 0
+        if: ${{ inputs.success }}
+      - run: exit 1
+        if: ${{ ! inputs.success }}
 
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ inputs.gitRef }}
-      - uses: err0r500/test-nx/.github/actions/docker@main
-        with:
-          app: ${{ github.event.client_payload.project }}
-          gitRef: ${{ github.event.client_payload.ref }}
-          dockerfile: ./dockerfiles/Dockerfile.node
-
-  deploy:
-    if: ${{inputs.trunk-flow}}
-    needs:
-      - ci
-      - docker
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "deploy ${{ github.event.client_payload.project }}"

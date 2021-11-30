@@ -10,9 +10,9 @@ runs:
         node-version: '16'
 
     - name: Install nx
-      shell: bash
       run: npm install -g nx
+      shell: bash
 
     - name: install nx & shared deps
-      shell: bash
       run: npm install
+      shell: bash
