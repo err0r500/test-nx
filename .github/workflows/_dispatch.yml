@@ -81,7 +81,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: sucess() && fromJson(needs.get-affected.outputs.affected)[0] != null
+    if: ${{ success() }} && fromJson(needs.get-affected.outputs.affected)[0] != null
       # && ${{ github.event.inputs.trunk-flow }}
     needs:
       - get-affected
