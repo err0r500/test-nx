@@ -1,6 +1,6 @@
 name: dispatch
 
-on: push
+on: [push, pull_request]
 
 jobs:
   get-affected:
@@ -36,14 +36,9 @@ jobs:
       - id: trunk-flow
         run: |
           echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
-      - uses: benc-uk/workflow-dispatch@v1
+      - name: dispatch to ci
+        uses: peter-evans/repository-dispatch@v1
         with:
-          workflow: ${{ matrix.project }}
           token: ${{ secrets.PAT }}
-          inputs: '{"ref": "${{ github.sha }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
-            #- name: dispatch to ci
-            #  uses: peter-evans/repository-dispatch@v1
-            #  with:
-            #    token: ${{ secrets.PAT }}
-            #    event-type: ${{ matrix.project }}
-            #    client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
+          event-type: ${{ matrix.project }}
+          client-payload: '{"ref": "${{ github.sha }}", "project": "${{ matrix.project }}", "trunk-flow": ${{ steps.trunk-flow.outputs.is-trunk }} }'
