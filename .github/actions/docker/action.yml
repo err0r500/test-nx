@@ -15,22 +15,18 @@ runs:
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
-    - name: app docker file
-      id: app-dockerfile
+
+    - name: use node default docker image
+      if: contains(fromJson('["svc1", "svc2", "svc3"]'), inputs.app)
       shell: bash
-      run: |
-        defaultNodeApps=("svc1" "svc2" "svc3")
-        if [[ " ${defaultNodeApps[@]} " =~ " ${{ inputs.app }} " ]]; then
-          echo "::set-output name=dockerfile::./dockerfiles/Dockerfile.node"
-        else
-          echo "no docker image for app ${{ inputs.app }}"
-        fi
+      run: echo "dockerfile=./dockerfiles/Dockerfile.node" >> $GITHUB_ENV"
+
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
         context: .
         push: false
         tags: test-nx/${{ inputs.app }}:${{ inputs.gitRef }}
-        file: ${{ steps.app-dockerfile.outputs.dockerfile }}
+        file: ${{ env.dockerfile }}
         build-args: |
           app=${{ inputs.app }}

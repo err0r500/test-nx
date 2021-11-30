@@ -10,8 +10,9 @@ runs:
   steps:
     - run: echo ${{ inputs }}
       shell: bash
+
     - name: node application
       uses: err0r500/test-nx/.github/actions/node@main
-      if: ${{ inputs.app }} == 'svc3'
+      if: contains(fromJson('["svc1", "svc2", "svc3"]'), inputs.app)
       with:
         app: ${{ inputs.app }}
