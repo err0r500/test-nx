@@ -27,4 +27,4 @@ runs:
         tags: test-nx/${{ inputs.app }}:${{ inputs.gitRef }}
         file: ${{ inputs.dockerfile }}
         build-args: |
-          app:${{ inputs.app }}
+          app=${{ inputs.app }}
