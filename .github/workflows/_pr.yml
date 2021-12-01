@@ -49,3 +49,18 @@ jobs:
         with:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
+
+
+
+  pr-all-good:
+    runs-on: ubuntu-latest
+    needs:
+      - docker-build
+      - test
+    if: always() # we've to do that because a skipped ckeck is not considered as failed by github
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - run: exit 0
+        if: env.WORKFLOW_CONCLUSION == 'success'
+      - run: exit 1
+        if: env.WORKFLOW_CONCLUSION != 'success'
