@@ -11,14 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        #with:
-        #  fetch-depth: 0
+        with:
+          fetch-depth: 0
       - uses: err0r500/test-nx/.github/actions/nx-install@main
       - name: get affected projects
         id: get-affected-projects
         run: |
-          git fetch origin main:main
-          echo "::set-output name=affected::$(nx print-affected --base main | jq -c '.projects')"
+          echo "::set-output name=affected::$(nx print-affected --base origin/main | jq -c '.projects')"
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
