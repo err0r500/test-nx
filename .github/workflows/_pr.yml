@@ -60,7 +60,6 @@ jobs:
     if: always() # we've to do that because a skipped ckeck is not considered as failed by github
     steps:
       - uses: technote-space/workflow-conclusion-action@v2
-      - run: echo ${{ env.WORKFLOW_CONCLUSION }}
       - run: exit 0
         if: env.WORKFLOW_CONCLUSION == 'success'
       - run: exit 1
