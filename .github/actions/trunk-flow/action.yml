@@ -27,3 +27,4 @@ runs:
         gitRef: ${{ inputs.gitRef }}
 
     - run: echo "deploy !"
+      shell: bash
