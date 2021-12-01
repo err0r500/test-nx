@@ -49,3 +49,13 @@ jobs:
         with:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
+
+
+
+   all-good:
+    runs-on: ubuntu-latest
+    needs:
+      - docker-build
+      - test
+    steps:
+      - run: exit 0
