@@ -57,7 +57,7 @@ jobs:
     needs:
       - docker-build
       - test
-    if: always()
+    if: always() # we've to do that because a skipped ckeck is not considered as failed by github
     steps:
       - run: exit 0
         if: env.WORKFLOW_CONCLUSION == 'success'
