@@ -1,0 +1,29 @@
+name: trunk-flow
+
+inputs:
+  gitRef:
+    required: true
+    description: 'the git ref to be checked out'
+  app:
+    required: true
+    description: 'the target app'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.gitRef }}
+
+    - uses: err0r500/test-nx/.github/actions/nx-install@main
+
+    - uses: err0r500/test-nx/.github/actions/app-deps-install@main
+      with:
+        app: ${{ inputs.app }}
+
+    - uses: err0r500/test-nx/.github/actions/docker-build@main
+      with:
+        app: ${{ inputs.app }}
+        gitRef: ${{ inputs.gitRef }}
+
+    - run: echo "deploy !"

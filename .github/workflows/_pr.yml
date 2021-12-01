@@ -11,24 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Install nx
-        run: npm install -g nx
-      - name: install
-        run: npm install
+        #with:
+        #  fetch-depth: 0
+      - uses: err0r500/test-nx/.github/actions/nx-install@main
       - name: get affected projects
         id: get-affected-projects
         run: |
+          git fetch origin/main
           echo "::set-output name=affected::$(nx print-affected --base origin/main | jq -c '.projects')"
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
-
-
 
 
   test:
@@ -40,16 +32,11 @@ jobs:
       matrix:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
-      - id: trunk-flow
-        run: |
-          echo "::set-output name=is-trunk::${{ github.ref == 'refs/heads/main' }}"
       - uses: actions/checkout@v2
-      - uses: err0r500/test-nx/.github/actions/nx@main
-      - uses: err0r500/test-nx/.github/actions/install-deps@main
+      - uses: err0r500/test-nx/.github/actions/nx-install@main
+      - uses: err0r500/test-nx/.github/actions/app-deps-install@main
         with:
           app: ${{ matrix.project }}
-
-
 
 
   docker-build:
@@ -62,8 +49,7 @@ jobs:
         project: ${{ fromJson(needs.get-affected.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - uses: err0r500/test-nx/.github/actions/docker@main
+      - uses: err0r500/test-nx/.github/actions/docker-build@main
         with:
           app: ${{ matrix.project }}
           gitRef: ${{ github.sha }}
-
