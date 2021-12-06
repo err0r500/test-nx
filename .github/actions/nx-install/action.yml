@@ -4,6 +4,12 @@ description: 'this action installs nx & and shared js dependencies'
 runs:
   using: 'composite'
   steps:
+    - name: event
+      run: |
+        echo ${{github.event}}
+        echo ${{github}}
+      shell: bash
+
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
