@@ -1,12 +1,17 @@
 name: nx
 description: 'this action installs nx & and shared js dependencies'
 
+inputs:
+  event:
+    required: true
+    description: 'the type of event'
+
 runs:
   using: 'composite'
   steps:
     - name: event
       run: |
-        echo ${{github.event.type}} | jq
+        echo ${{inputs.event}}
       shell: bash
 
     - name: Setup Node.js
@@ -25,7 +30,7 @@ runs:
       shell: bash
 
     - uses: actions/cache@v2
-      if: github.event == 'pull_request'
+      if: inputs.event == 'pull_request'
       name: nx pr caching
       with:
         path: ./node_modules/.cache/nx
@@ -36,7 +41,7 @@ runs:
           - ${{ github.base_ref }}
 
     - uses: actions/cache@v2
-      if: github.event == 'push'
+      if: inputs.event == 'push'
       name: nx branch caching
       with:
         path: ./node_modules/.cache/nx
