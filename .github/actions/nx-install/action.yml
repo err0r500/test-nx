@@ -7,11 +7,28 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'
+        node-version: '16.10.0'
 
-    - name: Install nx
-      run: npm install -g nx
+    - uses: actions/cache@v2
+      name: npm deps caching
+      with:
+        path: ~/.npm
+        key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install Dependencies
+      run: npm install --ignore-scripts --no-fund --no-audit
       shell: bash
+
+        #- uses: actions/cache@v2
+        #  name: nx caching
+        #  with:
+        #    path: ./node_modules/.cache/nx
+        #    key: nx-${{ github.base_ref }}-${{ github.head_ref }}-${{ github.sha }}
+          #          restore-keys:
+          #            - ${{ github.base_ref }}-${{ github.head_ref }}
+          #            - ${{ github.head_ref }}
+          #            - ${{ github.base_ref }}
+
 
     - name: install nx & shared deps
       run: npm install
