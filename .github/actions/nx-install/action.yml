@@ -20,7 +20,7 @@ runs:
       shell: bash
 
     - uses: actions/cache@v2
-      if: github.event == 'push'
+      if: github.event == 'pull_request'
       name: nx caching
       with:
         path: ./node_modules/.cache/nx
@@ -31,7 +31,7 @@ runs:
           - ${{ github.base_ref }}
 
     - uses: actions/cache@v2
-      if: github.event == 'pull_request'
+      if: github.event == 'push'
       name: nx caching
       with:
         path: ./node_modules/.cache/nx
