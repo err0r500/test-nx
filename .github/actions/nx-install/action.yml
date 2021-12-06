@@ -21,10 +21,10 @@ runs:
 
     - uses: actions/cache@v2
       if: github.event == 'pull_request'
-      name: nx caching
+      name: nx pr caching
       with:
         path: ./node_modules/.cache/nx
-        key: nx-${{ github.base_ref }}-${{ github.head_ref }}-${{ github.sha }}
+        key: nx-${{ github.sha }}
         restore-keys: |
           - ${{ github.base_ref }}-${{ github.head_ref }}
           - ${{ github.head_ref }}
@@ -32,7 +32,7 @@ runs:
 
     - uses: actions/cache@v2
       if: github.event == 'push'
-      name: nx caching
+      name: nx branch caching
       with:
         path: ./node_modules/.cache/nx
         key: nx-${{ github.ref }}-${{ github.sha }}
