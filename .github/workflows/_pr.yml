@@ -16,7 +16,7 @@ jobs:
       - name: get affected projects
         id: get-affected-projects
         run: |
-          echo "::set-output name=affected::$(npm run nx-print-affected --base origin/main | jq -c '.projects')"
+          echo "::set-output name=affected::$(npm run nx-print-affected -- --base origin/main | jq -c '.projects')"
     outputs:
       affected: ${{ steps.get-affected-projects.outputs.affected }}
 
