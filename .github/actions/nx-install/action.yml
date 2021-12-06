@@ -19,16 +19,25 @@ runs:
       run: npm install --ignore-scripts --no-fund --no-audit
       shell: bash
 
-        #- uses: actions/cache@v2
-        #  name: nx caching
-        #  with:
-        #    path: ./node_modules/.cache/nx
-        #    key: nx-${{ github.base_ref }}-${{ github.head_ref }}-${{ github.sha }}
-          #          restore-keys:
-          #            - ${{ github.base_ref }}-${{ github.head_ref }}
-          #            - ${{ github.head_ref }}
-          #            - ${{ github.base_ref }}
+    - uses: actions/cache@v2
+      if: github.event == 'push'
+      name: nx caching
+      with:
+        path: ./node_modules/.cache/nx
+        key: nx-${{ github.base_ref }}-${{ github.head_ref }}-${{ github.sha }}
+        restore-keys: |
+          - ${{ github.base_ref }}-${{ github.head_ref }}
+          - ${{ github.head_ref }}
+          - ${{ github.base_ref }}
 
+    - uses: actions/cache@v2
+      if: github.event == 'pull_request'
+      name: nx caching
+      with:
+        path: ./node_modules/.cache/nx
+        key: nx-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          - ${{ github.ref }}
 
     - name: install nx & shared deps
       run: npm install
