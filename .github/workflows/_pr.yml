@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
       - uses: err0r500/test-nx/.github/actions/nx-install@main
         with:
-          event: ${{github.event}}
+          event: 'pull_request'
       - name: get affected projects
         id: get-affected-projects
         run: |
