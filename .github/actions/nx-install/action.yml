@@ -6,8 +6,8 @@ runs:
   steps:
     - name: event
       run: |
-        echo ${{github.event}}
-        echo ${{github}}
+        echo ${{github.event}} | jq
+        echo ${{github}} | jq
       shell: bash
 
     - name: Setup Node.js
